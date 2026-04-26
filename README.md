@@ -88,3 +88,30 @@ Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 ---
 
 ## Estructura del proyecto
+
+src/
+├── app/
+│   ├── api/              # API Routes (backend)
+│   ├── auth/             # Páginas de login
+│   └── (dashboard)/      # Páginas protegidas
+├── components/           # Componentes React
+├── lib/                  # Lógica de negocio
+│   ├── auth/             # NextAuth + LDAP
+│   └── google/           # Google Admin SDK
+└── types/                # Tipos TypeScript
+
+---
+
+## Control de acceso
+
+El acceso se controla mediante grupos de Active Directory configurados en `src/lib/auth/permissions.ts`:
+
+| Grupo AD | Permisos |
+|---|---|
+| `GRP_IT_Admins` | Acceso total + auditoría |
+| `GRP_IT_Helpdesk` | Ver usuarios, editar firmas, delegar |
+| `GRP_IT_ReadOnly` | Solo lectura |
+
+---
+
+> Acceso restringido a personal autorizado. Para problemas de acceso contacta con el administrador de sistemas.
