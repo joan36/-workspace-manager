@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Workspace Manager
 
-## Getting Started
+Panel de administración interno para gestionar usuarios de Google Workspace, autenticado contra Active Directory.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791)
+![License](https://img.shields.io/badge/licencia-privada-red)
 
+---
+
+## Funcionalidades
+
+- **Gestión de usuarios** — Listado, búsqueda y detalle de todos los usuarios del dominio de Google Workspace
+- **Autenticación AD** — Login con credenciales corporativas y permisos por grupos de Active Directory
+- **Firmas de correo** — Ver y editar la firma HTML de cualquier usuario via Gmail API
+- **Suspender cuentas** — Activar y suspender cuentas con un clic y registro de auditoría
+- **Delegación de buzón** — Añadir y eliminar delegados de correo entre usuarios del dominio
+- **Log de auditoría** — Registro completo de quién hizo qué y cuándo, con IP y detalles
+
+---
+
+## Stack tecnológico
+
+| Tecnología | Uso |
+|---|---|
+| Next.js 16 | Frontend + API Routes |
+| NextAuth.js | Autenticación |
+| PostgreSQL | Base de datos de auditoría |
+| Prisma ORM | Acceso a base de datos |
+| ldapjs | Conexión con Active Directory |
+| Google Admin SDK | Google Workspace API |
+| TypeScript | Tipado estático |
+| Tailwind CSS | Estilos |
+
+---
+
+## Despliegue local
+
+**1. Clonar el repositorio**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/joan36/workspace-manager.git
+cd workspace-manager
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**2. Instalar dependencias**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**3. Configurar variables de entorno**
+```bash
+cp .env.example .env.local
+# Edita .env.local con tus valores reales
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**4. Crear las tablas en la base de datos**
+```bash
+npx prisma migrate deploy
+```
 
-## Learn More
+**5. Arrancar el servidor**
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Variables de entorno
 
-## Deploy on Vercel
+| Variable | Descripción | Requerida |
+|---|---|---|
+| `DATABASE_URL` | Conexión a PostgreSQL | ✅ |
+| `NEXTAUTH_SECRET` | Secret para firmar sesiones JWT | ✅ |
+| `NEXTAUTH_URL` | URL base de la app | ✅ |
+| `LDAP_URI` | URI del controlador de dominio | ✅ |
+| `LDAP_BASE_DN` | Base DN del dominio AD | ✅ |
+| `LDAP_BIND_DN` | DN de la cuenta de servicio AD | ✅ |
+| `LDAP_BIND_PASSWORD` | Password de la cuenta de servicio | ✅ |
+| `AD_DOMAIN` | Dominio de Active Directory | ✅ |
+| `GOOGLE_WORKSPACE_DOMAIN` | Dominio de Google Workspace | ✅ |
+| `GOOGLE_ADMIN_EMAIL` | Email del admin de Workspace | ✅ |
+| `GOOGLE_SA_KEY_PATH` | Ruta al JSON de la Service Account | ✅ |
+| `REDIS_URL` | URL de Redis para caché | ⬜ opcional |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Estructura del proyecto
